@@ -66,6 +66,7 @@ export interface IBusLocation {
     CS_LAT: string;
     CS_LNG: string;
     ROUTE_CODE: string;
+    VEH_HEADING: string;
 }
 
 export interface IScheduleDay {
@@ -75,22 +76,28 @@ export interface IScheduleDay {
     '': string;
 }
 
+/**
+ * Times are formatted as `1900-01-01 HH:mm:ss` (local Athens time). Trips after midnight use `1900-01-02`.
+ * The `*1` fields describe the outbound ("go") trip and the `*2` fields the return ("come") trip;
+ * the fields of the other direction are null.
+ */
 export interface IScheduleEntry {
     line_id: string;
     sde_code: string;
     sdc_code: string;
     sds_code: string;
     sde_aa: string;
-    sde_line1: string;
+    sde_line1: string | null;
     sde_kp1: string;
-    sde_start1: string;
-    sde_end1: string;
-    sde_line2: string;
+    sde_start1: string | null;
+    sde_end1: string | null;
+    sde_line2: string | null;
     sde_kp2: string;
-    sde_start2: string;
-    sde_end2: string;
+    sde_start2: string | null;
+    sde_end2: string | null;
     sde_sort: string;
-    sde_descr2: string | null;
+    sde_descr1?: string | null;
+    sde_descr2?: string | null;
     line_circle: string;
     line_descr: string;
     line_descr_eng: string;
@@ -99,6 +106,50 @@ export interface IScheduleEntry {
 export interface ISchedule {
     come: IScheduleEntry[];
     go: IScheduleEntry[];
+}
+
+/**
+ * Same conventions as {@link IScheduleEntry}. `sdd_start1` uses a different format (`Jan  1 1900 05:10:00:000AM`).
+ */
+export interface IDailyScheduleEntry {
+    line_id: string;
+    sdd_code: string;
+    sdc_code: string;
+    sds_code: string;
+    sdd_aa: string;
+    sdd_line1: string | null;
+    sdd_kp1: string;
+    sdd_start1: string | null;
+    sde_start1: string | null;
+    sde_end1: string | null;
+    sdd_line2: string | null;
+    sdd_kp2: string;
+    sde_start2: string | null;
+    sde_end2: string | null;
+    sdd_sort: string;
+    line_circle: string;
+    line_descr: string;
+    line_descr_eng: string;
+    remarks: string | null;
+}
+
+export interface IDailySchedule {
+    come: IDailyScheduleEntry[];
+    go: IDailyScheduleEntry[];
+}
+
+export interface IClosestStop {
+    StopCode: string;
+    StopID: string;
+    StopDescr: string;
+    StopDescrEng: string;
+    StopStreet: string | null;
+    StopStreetEng: string | null;
+    StopHeading: string;
+    StopLat: string;
+    StopLng: string;
+    /** Distance from the requested point, in degrees */
+    distance: string;
 }
 
 export interface IDirection {

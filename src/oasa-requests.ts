@@ -9,11 +9,13 @@ import {
     IBusLocation,
     IScheduleDay,
     ISchedule,
+    IDailySchedule,
+    IClosestStop,
     ILineWithMLInfo
 } from './interfaces';
 import defaultRequest from './requestFunction';
 
-const API_URL = 'http://telematics.oasa.gr/api/?act=';
+const API_URL = 'https://telematics.oasa.gr/api/?act=';
 
 export type RequestFunction = <T>(url: string, query: string, ...params: any[]) => Promise<T>;
 
@@ -164,23 +166,23 @@ export class APIRequests {
      * @param params - Params to pass at the underlying requestFunction
      */
     public getDailySchedule(lineCode: string, ...params: any[]) {
-        return this.requestFunction<ISchedule | null>(
+        return this.requestFunction<IDailySchedule | null>(
             API_URL,
-            `getDailySchedule&p1=${lineCode}`,
+            `getDailySchedule&line_code=${lineCode}`,
             ...params
         );
     }
 
     /**
      * Fetch the nearest stops around a specific geo-point
-     * @param x - latitude
-     * @param y - longitude
+     * @param lat - latitude
+     * @param lng - longitude
      * @param params - Params to pass at the underlying requestFunction
      */
-    public getClosestStops(x: string, y: string, ...params: any[]) {
-        return this.requestFunction<ISchedule | null>(
+    public getClosestStops(lat: string, lng: string, ...params: any[]) {
+        return this.requestFunction<IClosestStop[] | null>(
             API_URL,
-            `getClosestStops&p1=${x}&p2=${y}`,
+            `getClosestStops&p1=${lat}&p2=${lng}`,
             ...params
         );
     }

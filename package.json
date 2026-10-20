@@ -2,7 +2,9 @@
     "name": "oasa-telematics-api",
     "version": "0.2.6",
     "main": "build/index.js",
+    "module": "build/esm/index.js",
     "types": "build/index.d.ts",
+    "sideEffects": false,
     "description": "The Athens' bus telematics API, complete with types and helper methods",
     "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
     "homepage": "https://chrispanag.github.io/oasa-telematics-api/",
@@ -23,7 +25,7 @@
         "public-transport"
     ],
     "scripts": {
-        "build": "yarn tsc",
+        "build": "yarn tsc && yarn tsc -p tsconfig.esm.json",
         "test": "yarn ts-mocha tests/**/*.spec.ts",
         "gen:docs": "yarn typedoc --out docs --includeVersion src/index.ts",
         "prepublish": "yarn run build",
@@ -44,13 +46,11 @@
     },
     "dependencies": {
         "@types/lodash": "^4.14.172",
-        "@types/node-fetch": "^2.5.12",
         "fuse.js": "^6.4.6",
-        "lodash": "^4.17.21",
-        "node-fetch": "^2.6.1"
+        "lodash": "^4.17.21"
     },
     "engines": {
-        "node": ">=8.9.0"
+        "node": ">=18"
     },
     "files": [
         "LICENSE",

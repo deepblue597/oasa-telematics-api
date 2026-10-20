@@ -1,15 +1,13 @@
 import { RequestFunction } from './oasa-requests';
-import fetch from 'node-fetch';
 
+// Uses the global fetch (available in browsers and Node.js >= 18)
 const defaultRequest: RequestFunction = async <T>(url: string, query: string) => {
-    try {
-        const res = await fetch(url + query);
-        const data = await res.json();
-
-        return data as T;
-    } catch (err) {
-        throw err;
+    const res = await fetch(url + query);
+    if (!res.ok) {
+        throw new Error(`OASA API request "${query}" failed with status ${res.status}`);
     }
+
+    return (await res.json()) as T;
 };
 
 export default defaultRequest;
